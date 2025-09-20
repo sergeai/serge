@@ -372,7 +372,7 @@ async function updateAuditWithResults(auditId: string, auditResult: AuditResult,
       status: 'completed',
       results: auditResult,
       report_html: reportHtml,
-      ai_readiness_score: auditResult.overallScore,
+      overall_score: auditResult.overallScore,
       completed_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     })
