@@ -48,6 +48,22 @@ export async function POST(request: NextRequest) {
   let auditId: string | null = null
 
   try {
+    // 0. Validate environment variables
+    const missingEnvVars = []
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missingEnvVars.push('NEXT_PUBLIC_SUPABASE_URL')
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) missingEnvVars.push('SUPABASE_SERVICE_ROLE_KEY')
+    if (!process.env.OPENAI_API_KEY) missingEnvVars.push('OPENAI_API_KEY')
+    
+    if (missingEnvVars.length > 0) {
+      console.error('[AUDIT] Missing environment variables:', missingEnvVars)
+      return NextResponse.json(
+        { error: `Missing required environment variables: ${missingEnvVars.join(', ')}` },
+        { status: 500 }
+      )
+    }
+
+    console.log('[AUDIT] Environment variables validated successfully')
+
     // 1. Parse and validate request
     const requestData = await parseAndValidateRequest(request)
     const { businessEmail, analysisTypes, userId } = requestData
@@ -118,6 +134,17 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const duration = Date.now() - startTime
     console.error(`[AUDIT] Failed after ${duration}ms:`, error)
+    
+    // Enhanced error logging for Vercel debugging
+    console.error('[AUDIT] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace',
+      type: error?.constructor?.name || 'Unknown',
+      auditId,
+      environment: process.env.NODE_ENV,
+      hasOpenAI: !!process.env.OPENAI_API_KEY,
+      hasSupabase: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+    })
 
     // Mark audit as failed if we created one
     if (auditId) {
@@ -136,8 +163,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 403 })
     }
 
+    // Return more detailed error for debugging
     return NextResponse.json(
-      { error: 'Internal server error', auditId },
+      { 
+        error: 'Internal server error', 
+        auditId,
+        details: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.message : 'Unknown error') : undefined
+      },
       { status: 500 }
     )
   }

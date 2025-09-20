@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "app/api/audit/run/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/audit/download/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true"
+  }
+}
