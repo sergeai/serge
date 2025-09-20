@@ -1,0 +1,47 @@
+{
+  "name": "leadai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:webhook": "node test-webhook.js",
+    "test:audit": "node test-audit-creation.js",
+    "test:complete": "node test-complete-audit.js"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "@hookform/resolvers": "^3.3.2",
+    "@stripe/stripe-js": "^2.4.0",
+    "@supabase/auth-helpers-nextjs": "^0.8.7",
+    "@supabase/auth-helpers-react": "^0.4.2",
+    "@supabase/auth-ui-react": "^0.4.6",
+    "@supabase/auth-ui-shared": "^0.1.8",
+    "@supabase/supabase-js": "^2.38.4",
+    "autoprefixer": "^10.4.16",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.294.0",
+    "next": "14.0.3",
+    "openai": "^4.20.1",
+    "postcss": "^8.4.32",
+    "puppeteer": "^21.11.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.48.2",
+    "stripe": "^14.9.0",
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.2",
+    "@types/react": "^18.2.38",
+    "@types/react-dom": "^18.2.17",
+    "eslint": "^8.54.0",
+    "eslint-config-next": "14.0.3",
+    "typescript": "^5.3.2"
+  }
+}
